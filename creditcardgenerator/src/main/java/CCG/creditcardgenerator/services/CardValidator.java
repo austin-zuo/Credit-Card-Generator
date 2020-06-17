@@ -1,9 +1,13 @@
 package CCG.creditcardgenerator.services;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 
+@Service
 public class CardValidator {
-    public Boolean validate(String cardNum) {
+
+    public String validate(String cardNum) {
         Long num = Long.parseLong(cardNum);
         Long lastDigit = num % 10;
         num = num / 10;
@@ -26,6 +30,10 @@ public class CardValidator {
             sum += digit;
         }
         sum = sum % 10;
-        return (sum + lastDigit) == 10;
+        if ((sum + lastDigit) != 10) {
+            return "This is not a valid card number.";
+        } else {
+            return "This is a valid card number";
+        }
     }
 }

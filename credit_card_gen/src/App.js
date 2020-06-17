@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import './App.css';
 import Card from './Card/Card.js';
-
+import Validation from './Forms/Validation.js'
 class App extends Component {
 
   state = {
     card_list: [],
     show: [],
-    bin: ''
+    bin: '',
+
   }
 
   //Updates the bin in this.state as userInput
@@ -71,8 +74,6 @@ class App extends Component {
         </div>)
     })
 
-
-
     return (
       <div className="App">
         <h1>Fake Credit Card Generator</h1>
@@ -81,6 +82,8 @@ class App extends Component {
         <h2>Now Enter Number of Cards to Generate</h2>
         <input onChange={this.cardHandler}></input>
         {card_arr}
+
+        <Validation></Validation>
       </div>
     );
   }
