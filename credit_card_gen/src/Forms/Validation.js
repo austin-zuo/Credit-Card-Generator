@@ -19,7 +19,6 @@ export default class Validation extends React.Component {
     }
 
     validateHandler = () => {
-        console.log('validate handler called')
         let url = 'http://localhost:8080/rest/validator/' + this.state.num
         axios.get(url)
             .then(response => {
@@ -30,6 +29,7 @@ export default class Validation extends React.Component {
     render() {
         return (
             <div>
+                <h1>Credit Card Validator</h1>
                 <h2>Enter Card No.</h2>
                 <input onChange={this.changeHandler}></input>
                 &nbsp;&nbsp;

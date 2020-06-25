@@ -8,8 +8,8 @@ class App extends Component {
 
   state = {
     card_list: [],
-    show: [],
     bin: '',
+    amount: null
 
   }
 
@@ -19,47 +19,52 @@ class App extends Component {
     this.setState({
       bin: event.target.value
     })
-    console.log(this.state.bin)
+  }
+
+  updateBinHandler2 = (event) => {
+    if (event.target.value === 'Visa' || event.target.value === 'Mastercard' || event.target.value === 'Discover' || event.target.value === 'American Express') {
+      let bin = event.target.value
+      this.setState({
+        bin: bin
+      })
+    }
   }
 
   //Generates userInput amount of cards in this.state
   //input: event, output: none
-  cardHandler = (event) => {
+  cardHandler = () => {
     //Function that generates random credit card number that start with Bin
     //input: None
     //output: str->random CCN
-    const genCardNumber = () => {
-      let rv = this.state.bin
-      let num = 16 - rv.length
-      for (let i = 0; i < num; i++) {
-        rv += Math.floor(Math.random() * 10).toString()
-      }
-      return rv
-    }
+    let url = 'http://localhost:8080/rest/generator/' + this.state.bin + '/' + this.state.amount
+    axios.get(url)
+        .then(response => {
+            this.setState({
+              card_list: response.data
+            })
+        })
+
     let arr = []
     let showarr = []
-    let num = parseInt(event.target.value, 10);
-    for (let i = 0; i < num; i++) {
-        arr.push(genCardNumber())
+    let amount = this.state.amount
+    for (let i = 0; i < amount; i++) {
         showarr.push(false)
     }
     this.setState({
-      card_list: arr,
-      show: false
+      card_list: arr
     })
     
 
   }
 
-  //Changes this.state.show[index] to true
-  //input: index, output: none
-  showVerifyHandler = (index) => {
-    var tmp = [...this.state.show]
-    tmp[index] = true
+  //Updates amount in this.state
+  updateAmountHandler = (event) => {
     this.setState({
-      show: tmp
+      amount: event.target.value
     })
   }
+
+
 
   verify = (num) => {
     return (Math.random() > 0.5).toString();
@@ -67,22 +72,33 @@ class App extends Component {
 
   render() {
     const card_arr = this.state.card_list.map((num, index) => {
-      return (<div>
-        <Card key={index} num={num} showVerify={this.showVerifyHandler.bind(this, index)}></Card>
-        {this.state.show[index] ?
-        <p>{this.verify(num)}</p> : null}
-        </div>)
+      return (<Card key={index} num={num}></Card>)
     })
 
     return (
       <div className="App">
         <h1>Fake Credit Card Generator</h1>
-        <h2>Now Enter 1-5 Digit Bin Number</h2>
+        <h2>Enter 1-6 Digit Bin Number or Choose From Dropdown</h2>
         <input onChange={this.updateBinHandler}></input>
-        <h2>Now Enter Number of Cards to Generate</h2>
-        <input onChange={this.cardHandler}></input>
-        {card_arr}
+        <form>
+          <label>
+            <h2>Or Pick From This Label</h2>
+            <select value={this.state.value} onChange={this.updateBinHandler2}>
+              <option value={null}>Select</option>
+              <option value='Visa'>Visa</option>
+              <option value='Mastercard'>Mastercard</option>
+              <option value='Discover'>Discover</option>
+              <option value='American Express'>American Express</option>
+            </select>
+          </label>
+        </form>
 
+        <h2>Enter Number of Cards to Generate</h2>
+        <input onChange={this.updateAmountHandler}></input>
+        &nbsp;&nbsp;
+        <button onClick={this.cardHandler}>Generate</button>
+        {card_arr}
+        
         <Validation></Validation>
       </div>
     );
