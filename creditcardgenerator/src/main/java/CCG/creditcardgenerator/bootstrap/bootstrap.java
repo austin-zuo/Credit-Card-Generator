@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class bootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Hello from Bootstrap");
+
     }
 }
