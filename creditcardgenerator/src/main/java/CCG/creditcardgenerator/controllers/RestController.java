@@ -4,6 +4,7 @@ import CCG.creditcardgenerator.services.CardGenerator;
 import CCG.creditcardgenerator.services.CardValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class RestController {
 
     private static final Logger LOG = LogManager.getLogger(RestController.class);
     public RestController(CardValidator validatorService, CardGenerator generatorService) {
+        LOG.info("Successfully create rest controller.");
         this.validatorService = validatorService;
         this.generatorService = generatorService;
     }
@@ -23,7 +25,7 @@ public class RestController {
     @CrossOrigin
     @RequestMapping(value="/rest/validator/{num}", method = RequestMethod.GET)
     public String validateNum(@PathVariable("num") String num){
-        LOG.info("Sucessfully called validateNum.");
+        LOG.info("Successfully called validateNum.");
         return validatorService.validate(num);
     }
     
@@ -36,8 +38,4 @@ public class RestController {
         return rv;
     }
 
-    @RequestMapping(value="/hello")
-    public String home() {
-        return "Hello from home";
-    }
 }
