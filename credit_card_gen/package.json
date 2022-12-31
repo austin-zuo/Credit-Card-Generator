@@ -9,7 +9,7 @@
     "react-alert": "^7.0.1",
     "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "5.0.1",
     "reactstrap": "^8.5.1"
   },
   "scripts": {
